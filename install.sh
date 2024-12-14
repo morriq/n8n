@@ -118,7 +118,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=adrian
+User=amjid
 ExecStart=/usr/local/bin/n8n start --tunnel
 Restart=on-failure
 
