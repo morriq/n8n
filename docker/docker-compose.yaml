@@ -8,7 +8,7 @@ networks:
   demo:
 x-n8n: &service-n8n
   image: n8nio/n8n:latest
-  networks: ['demo']
+  networks: ['syncbricks']
   environment:
     - DB_TYPE=postgresdb
     - DB_POSTGRESDB_HOST=postgres
@@ -24,7 +24,7 @@ x-n8n: &service-n8n
       condition: service_healthy
 x-ollama: &service-ollama
   image: ollama/ollama:latest
-  networks: ['demo']
+  networks: ['syncbricks']
   restart: unless-stopped
   ports:
     - 11434:11434
@@ -33,7 +33,7 @@ x-ollama: &service-ollama
 services:
   postgres:
     image: postgres:16-alpine
-    networks: ['demo']
+    networks: ['syncbricks']
     restart: unless-stopped
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
@@ -101,7 +101,7 @@ services:
   qdrant:
     image: qdrant/qdrant
     container_name: qdrant
-    networks: ['demo']
+    networks: ['syncbricks']
     restart: unless-stopped
     ports:
       - 6333:6333
@@ -112,7 +112,7 @@ services:
     container_name: ollama
   ollama-init:
     image: ollama/ollama:latest
-    networks: ['demo']
+    networks: ['syncbricks']
     volumes:
       - ollama_storage:/root/.ollama
     entrypoint: /bin/sh
