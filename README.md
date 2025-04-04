@@ -1,8 +1,3 @@
-Sure! Here’s a clean and professional **`README.md`** file for your GitHub repository that includes the full tutorial setup, your courses, and a friendly tone to attract self-hosters, developers, and automation enthusiasts.
-
----
-
-```markdown
 # 🚀 Secure n8n Deployment with Docker Compose
 
 A complete and secure `n8n` automation stack using Docker Compose. This setup includes:
