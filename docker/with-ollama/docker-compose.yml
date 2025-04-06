@@ -1,3 +1,5 @@
+version: "3.8"
+
 volumes:
   n8n_storage:
   postgres_storage:
@@ -5,22 +7,13 @@ volumes:
   certs:
   acme:
   cloudflared_data:
-  ollama_storage:
+  ollama_data:
 
 networks:
   syncbricks:
     external: false
   proxy:
     external: false
-
-x-ollama: &service-ollama
-  image: ollama/ollama:latest
-  networks: ['syncbricks']
-  restart: unless-stopped
-  ports:
-    - 11434:11434
-  volumes:
-    - ollama_storage:/root/.ollama
 
 services:
 
@@ -156,30 +149,21 @@ services:
     volumes:
       - qdrant_storage:/qdrant/storage
 
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    restart: unless-stopped
+    networks: ['syncbricks']
+    ports:
+      - 11434:11434
+    volumes:
+      - ollama_data:/root/.ollama
+
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: cloudflared
     restart: unless-stopped
     networks: ['proxy']
-    command: tunnel --no-autoupdate run --token remove_this_and_enter_your_token_here
+    command: tunnel --no-autoupdate run --token <your-cloudflare-tunnel-token>
     volumes:
       - cloudflared_data:/etc/cloudflared
-
-  ollama:
-    <<: *service-ollama
-    container_name: ollama
-
-  ollama-init:
-    image: ollama/ollama:latest
-    networks: ['syncbricks']
-    volumes:
-      - ollama_storage:/root/.ollama
-    entrypoint: /bin/sh
-    command:
-      - "-c"
-      - |
-        sleep 10
-        OLLAMA_HOST=ollama:11434 ollama pull llama3.1
-        OLLAMA_HOST=ollama:11434 ollama pull nomic-embed-text
-    depends_on:
-      - ollama
