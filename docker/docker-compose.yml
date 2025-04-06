@@ -1,3 +1,5 @@
+version: '3.8'
+
 volumes:
   n8n_storage:
   postgres_storage:
@@ -5,7 +7,6 @@ volumes:
   certs:
   acme:
   cloudflared_data:
-  ollama_storage:
 
 networks:
   syncbricks:
@@ -155,13 +156,3 @@ services:
     command: tunnel --no-autoupdate run --token reomveo this and enter your token here 
     volumes:
       - cloudflared_data:/etc/cloudflared
-
-  ollama:
-    image: ollama/ollama
-    container_name: ollama
-    restart: unless-stopped
-    networks: ['syncbricks']
-    ports:
-      - "11434:11434"
-    volumes:
-      - ./ollama:/root/.ollama
