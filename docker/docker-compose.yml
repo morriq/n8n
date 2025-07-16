@@ -34,7 +34,7 @@ services:
     depends_on:
       - nginx-proxy
     environment:
-      - DEFAULT_EMAIL=your@email.com
+      - DEFAULT_EMAIL=$LETSENCRYPT_EMAIL
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - certs:/etc/nginx/certs
@@ -48,9 +48,9 @@ services:
     networks: ['syncbricks']
     restart: unless-stopped
     environment:
-      - POSTGRES_USER=amjid
-      - POSTGRES_PASSWORD=amjid
-      - POSTGRES_DB=n8ndb
+      - POSTGRES_USER=$DB_POSTGRESDB_USER
+      - POSTGRES_PASSWORD=$DB_POSTGRESDB_PASSWORD
+      - POSTGRES_DB=$DB_POSTGRESDB_DATABASE
     volumes:
       - postgres_storage:/var/lib/postgresql/data
     healthcheck:
