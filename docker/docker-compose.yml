@@ -14,33 +14,33 @@ networks:
 
 services:
 
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    container_name: nginx-proxy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - certs:/etc/nginx/certs:ro
-      - acme:/etc/acme.sh
-    networks:
-      - proxy
+  # nginx-proxy:
+  #   image: jwilder/nginx-proxy
+  #   container_name: nginx-proxy
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  #     - certs:/etc/nginx/certs:ro
+  #     - acme:/etc/acme.sh
+  #   networks:
+  #     - proxy
 
-  acme-companion:
-    image: nginxproxy/acme-companion
-    container_name: nginx-proxy-acme
-    depends_on:
-      - nginx-proxy
-    environment:
-      - DEFAULT_EMAIL=$LETSENCRYPT_EMAIL
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - certs:/etc/nginx/certs
-      - acme:/etc/acme.sh
-    networks:
-      - proxy
+  # acme-companion:
+  #   image: nginxproxy/acme-companion
+  #   container_name: nginx-proxy-acme
+  #   depends_on:
+  #     - nginx-proxy
+  #   environment:
+  #     - DEFAULT_EMAIL=$LETSENCRYPT_EMAIL
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     - certs:/etc/nginx/certs
+  #     - acme:/etc/acme.sh
+  #   networks:
+  #     - proxy
 
   postgres:
     image: postgres:16-alpine
